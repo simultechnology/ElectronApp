@@ -22,7 +22,37 @@
 
   <script>
     'use strict';
-    
+
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer;
+    const remote = electron.remote;
+    const Menu = remote.Menu;
+    const MenuItem = remote.MenuItem;
+    var shell = remote.shell;
+
+
+    var color = localStorage.getItem('color') ? localStorage.getItem('color') : 'skyblue';
+    setBackgroundColor(color);
+
+    let menu = new Menu();
+    menu.append(new MenuItem({ 'label': 'skyblue', click: function () {
+      setBackgroundColor('skyblue'); }}));
+    menu.append(new MenuItem({ 'label': 'tomato', click: function () {
+      setBackgroundColor('tomato'); }}));
+    menu.append(new MenuItem({ 'label': 'slategray', click: function () {
+      setBackgroundColor('slategray'); }}));
+    window.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      menu.popup(remote.getCurrentWindow());
+    });
+
+    function setBackgroundColor(color) {
+      document.body.style.backgroundColor = color;
+      localStorage.setItem('color', color);
+      //ipcRenderer.send('bg_changed', color);
+
+    }
+
     const quote = document.getElementById('quote');
     const quotes = [
         'Just do it!',
@@ -36,6 +66,20 @@
     ];
     window.addEventListener('click', function () {
       quote.innerHTML = quotes[Math.floor(Math.random() * quotes.length)]
+    });
+
+    ipcRenderer.on('set_bgcolor', function (evt, color) {
+      setBackgroundColor(color);
+    });
+
+    setTimeout(function () {
+      var notification = new Notification(
+          'Quote!',
+          { body: 'Visit our website' }
+      );
+      notification.onclick = function () {
+        shell.openExternal('http://google.com');
+      };
     });
   </script>
 </body>
