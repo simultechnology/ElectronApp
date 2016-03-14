@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body {
+      font-family: Verdana, sans-serif;
+      padding: 10px;
+    background: skyblue;
+    }
+    p {
+      color: #fff;
+      font-size: 36px;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <p id="quote">Just!</p>
+
+  <script>
+    'use strict';
+    
+    const quote = document.getElementById('quote');
+    const quotes = [
+        'Just do it!',
+        'Done is better than perfect',
+        'In this part of the book',
+        'mathematicians and scientists',
+        'their properties are sometimes startling',
+        'I call them funny numbers',
+        'When we look at strange numbers',
+        'the starting place has to be zero'
+    ];
+    window.addEventListener('click', function () {
+      quote.innerHTML = quotes[Math.floor(Math.random() * quotes.length)]
+    });
+  </script>
+</body>
+</html>
